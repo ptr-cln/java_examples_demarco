@@ -16,7 +16,7 @@ public class Test01 {
 //		System.out.println("v2 - Name: " + v2.getName());
 //		System.out.println("v2 - Type: " + v2.getType());
 		
-	
+		Car c1 = new Car (EnumEngineType.ELECTRIC);
 		
 	}
 

@@ -34,6 +34,8 @@ public class Car extends TerrestrialVehicle {
 	@Override
 	protected boolean loadFromFile(File configFile) {
 		// TODO Auto-generated method stub
+		
+		//TODO : implement the logic here
 		return false;
 	}
 	
