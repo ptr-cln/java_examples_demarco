@@ -1,7 +1,7 @@
 package org.protor.sandbox.celiento.tests;
 
-public enum MyVehicleType {
-	AERIAL,
-	TERRESTRIAL,
-	MARINE
+public enum EnumGroundContactType {
+	WHEELS,
+	TRACKS,
+	RAIL
 }
