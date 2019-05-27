@@ -1,4 +1,4 @@
-package org.protor.sandbox.celiento.tests;
+package org.protor.sandbox.celiento;
 
 
 public class Test01 {

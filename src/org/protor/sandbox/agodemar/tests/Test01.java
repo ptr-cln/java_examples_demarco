@@ -52,6 +52,10 @@ public class Test01 {
 		for(Car c : list) {
 			System.out.println(c);
 		}
+		
+
+		
+	
 
 	}
 
