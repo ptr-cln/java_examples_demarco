@@ -80,7 +80,7 @@ public class Test03 {
 						
 						double endurance = Double.parseDouble(XMLUtils.getXMLAttributesByPath(node, "//endurance_hr", "value").get(0));
 						
-						EnumEngineType engineType;
+						EnumEngineType engineType = null;
 						String engineTypeString = XMLUtils.getXMLAttributesByPath(node, "//engine_type", "value").get(0).toUpperCase();
 						
 						switch(engineTypeString) {
@@ -94,7 +94,7 @@ public class Test03 {
 						break;
 						}
 						
-						Car car = new Car(carName, EnumEngineType, range, endurance, pass, payload);
+						Car car = new Car(carName,engineType, range, endurance, pass, payload);
 						
 						
 					}

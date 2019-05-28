@@ -2,6 +2,8 @@ package org.protor.sandbox.celiento;
 
 import java.io.File;
 
+import org.w3c.dom.Node;
+
 public abstract class AbstractVehicle {
 
 	private String name = "";
@@ -10,7 +12,10 @@ public abstract class AbstractVehicle {
 	private double endurance = 0.0; // HOURS
 	private int numMaxPassengers = 0;
 	private double maxPayload = 0.0; // KG
-	private File configFile;
+	
+	protected File configFile;
+	protected Node node;
+	
 
 	//--------------------------------------------------------------------------------------------
 	public AbstractVehicle( EnumEngineType engineType) {
@@ -48,13 +53,19 @@ public abstract class AbstractVehicle {
 
 	//--------------------------------------------------------------------------------------------
 
-	public AbstractVehicle(File configFIle) {
+	public AbstractVehicle(File configFile) {
 		this.configFile = configFile;
-		this.loadFromFile(configFile);
+		this.loadFromNode(this.node);
 	}
 
-	protected abstract boolean loadFromFile(File configFile);
+	protected abstract boolean loadFromFile(File configFile); //In subclasses
 
+	protected abstract boolean loadFromNode(Node node);
+	public AbstractVehicle(Node node) {
+		this.node = node;
+		this.loadFromFile(configFile);
+	}
+	
 	public EnumEngineType getEngineType() {
 		return engineType;
 	}

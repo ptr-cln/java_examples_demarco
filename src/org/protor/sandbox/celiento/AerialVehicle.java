@@ -23,6 +23,8 @@ public abstract class AerialVehicle extends AbstractVehicle {
 		super(name, engineType, range, endurance, numMaxPassengers, maxPayload);
 
 	}
+	
+	
 
 
 

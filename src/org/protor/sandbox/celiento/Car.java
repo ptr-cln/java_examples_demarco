@@ -2,6 +2,8 @@ package org.protor.sandbox.celiento;
 
 import java.io.File;
 
+import org.w3c.dom.Node;
+
 public class Car extends TerrestrialVehicle {
 
 	public Car(EnumEngineType engineType) {
@@ -30,7 +32,11 @@ public class Car extends TerrestrialVehicle {
 		super(name, engineType);
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	@Override
+	
+	
+	
 	@Override
 	protected boolean loadFromFile(File configFile) {
 		// TODO Auto-generated method stub
