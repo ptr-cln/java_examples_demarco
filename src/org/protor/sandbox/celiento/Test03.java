@@ -1,19 +1,21 @@
 package org.protor.sandbox.celiento;
 
-import java.util.List;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.lang.model.element.Element;
-import javax.swing.text.Document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.soap.Node;
 
 import org.protor.filesio.utils.XMLUtils;
+import org.protor.sandbox.celiento.Car;
+import org.protor.sandbox.celiento.EnumEngineType;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -21,77 +23,98 @@ public class Test03 {
 
 	public static void main(String[] args) {
 
-		if (args.length != 0 ) {
+
+		// "C:\Users\PC10\github\java_examples_demarco\input"
+		//String fileName = "cars.xml";
+		//File carsFile = new File("input" + File.separator + fileName);
+		if (args.length !=0) {
 			String filePath = args[0];
 			File carsFile = new File(filePath);
-
+			
 			if (!carsFile.exists()) {
-				System.err.println("File " + carsFile.getAbsolutePath() + "not found");
+				System.err.println("File " + carsFile.getAbsolutePath() + " not found.");
 				System.exit(1);
 			}
-
 			System.out.println("Found file: " + carsFile.getAbsolutePath());
-			System.out.println("---------- . . . Now reading XML content . . . ----------");
-
+			System.out.println("---- Now reading XML content ...");
+			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder;
-
-			//			Document doc;
-
+			DocumentBuilder dBuilder;		
+			
 			try {
 				dBuilder = dbFactory.newDocumentBuilder();
-				org.w3c.dom.Document doc =  dBuilder.parse(carsFile);
+				Document doc = dBuilder.parse(carsFile);
 				
 				System.out.println("File XML parsed.");
 				
 				doc.getDocumentElement().normalize();
 				System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+				
 				NodeList nodeList = doc.getElementsByTagName("car");
-				System.out.println("N. cars: " + nodeList.getLength());
+				System.out.println(nodeList.getLength());
 				
-				List<Car> cars = new ArrayList<Car>();
+				List<Car> cars = new ArrayList<>();
 				
-				for (int iNode = 0 ; iNode < nodeList.getLength() ; iNode++) {
-					org.w3c.dom.Node node = nodeList.item(iNode);
-					System.out.println("\n Current element: " + node.getNodeName());
-					 
+				for (int iNode = 0; iNode < nodeList.getLength(); iNode++) {
+					Node node = nodeList.item(iNode);
+					System.out.println("\nCurrent Element: " + node.getNodeName());
+					
 					if (node.getNodeType() == Node.ELEMENT_NODE) {
-						org.w3c.dom.Element elem = (org.w3c.dom.Element) node;
+						Element elem = (Element) node;
 						NamedNodeMap attributesMap = elem.getAttributes();
 						System.out.println("N. attributes: " + attributesMap.getLength());
 						System.out.println("Car id: " + elem.getAttribute("id"));
 						
-//						String carName = XMLUtils.getXMLPropertyByPath(elem, "name");
-//						System.out.println("Car name: " + carName );
+						String carName = XMLUtils.getXMLPropertyByPath(node, "//name/text()");
+						System.out.println("Car Name: " + carName);
 						
-						String passString = XMLUtils.getXMLAttributesByPath(node, "//passengers", "value");
+						String passString = XMLUtils.getXMLAttributesByPath(node, "//passengers", "value").get(0);
 						System.out.println("Passengers: " + passString);
+						int pass = Integer.parseInt(passString);
+						
+						double range = Double.parseDouble(XMLUtils.getXMLAttributesByPath(node, "//range_km", "value").get(0));
+						System.out.println("Range km: " + range);
+						
+						double payload = Double.parseDouble(XMLUtils.getXMLAttributesByPath(node, "//payload_kg", "value").get(0));
+						System.out.println("Payload kg " + payload);
+						
+						double endurance = Double.parseDouble(XMLUtils.getXMLAttributesByPath(node, "//endurance_hr", "value").get(0));
+						
+						EnumEngineType engineType;
+						String engineTypeString = XMLUtils.getXMLAttributesByPath(node, "//engine_type", "value").get(0).toUpperCase();
+						
+						switch(engineTypeString) {
+						case "THERMICAL" : engineType = EnumEngineType.TERMICAL;
+						break;
+						case "HYBRID" : engineType = EnumEngineType.HYBRID;
+						break;
+						case "ELECTRIC" : engineType = EnumEngineType.ELECTRIC;
+						break;
+						case "NONE" : engineType = EnumEngineType.NONE;
+						break;
+						}
+						
+						Car car = new Car(carName, EnumEngineType, range, endurance, pass, payload);
+						
 						
 					}
 					
-					
 				}
-
-			}
-			catch (IOException e){
-				System.err.println(" ");
-			} catch (SAXException e) {
-
-				e.printStackTrace();
-			} catch (ParserConfigurationException e) {
 				
+				
+			} catch (ParserConfigurationException e) {
+				e.printStackTrace();
+				
+			} catch (SAXException e) {
+				e.printStackTrace();
+				
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
 
-		else {
-
-			System.out.println("This program must be use arguments.");
-			System.out.println("Terminating");
+		} else {
+			System.err.println("This program must be used with arguments! \n Terminating.");
 			System.exit(1);
-
 		}
-
 	}
-
 }
